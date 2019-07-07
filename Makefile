@@ -17,6 +17,7 @@ test:
 	cd functions/fetch-stats && pylint -ry main.py
 	cd functions/fetch-open && pylint -ry main.py
 	cd functions/fetch-closed && pylint -ry main.py
+	cd functions/import-stats && pylint -ry main.py
 
 .PHONY: deploy
 deploy:
