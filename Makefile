@@ -7,3 +7,5 @@ test:
 	pip3 -V
 	node --version
 	npm --version
+	npm install -g serverless
+	sls --version

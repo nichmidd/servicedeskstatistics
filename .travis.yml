@@ -2,5 +2,9 @@ dist: xenial
 language: python
 python:
   - "3.7"
+install:
+  - nvm install node
+before_script:
+  - nvm use node
 script:
   - make
