@@ -13,11 +13,11 @@ prebuild:
 
 .PHONY: build
 build:
-	cd ~/functions/fetch-stats
+	cd ~/servicedeskstatistics/functions/fetch-stats
 	sls install
 	pip3 install -r requirements.txt
 
 .PHONY: test
 test:
-	cd ~/functions/fetch-stats
+	cd ~/servicedeskstatistics/functions/fetch-stats
 	pylint .
