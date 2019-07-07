@@ -14,4 +14,6 @@ build:
 
 .PHONY: test
 test:
-	cd functions/fetch-stats && pylint .
+	cd functions/fetch-stats && pylint main.py
+	cd functions/fetch-open && pylint main.py
+	cd functions/fetch-closed && pylint main.py
