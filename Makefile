@@ -1,5 +1,5 @@
 .PHONY: all
-all: prebuild build test 
+all: prebuild build test deploy
 
 .PHONY: prebuild
 prebuild:
@@ -14,11 +14,13 @@ build:
 
 .PHONY: test
 test:
-	ls functions/fetch-stats/config.json
-	ls functions/fetch-open/config.json
-	ls functions/fetch-closed/config.json
-	ls functions/import-stats/config.json
-	ls ~/.gcloud/
+	echo "##TODO##"
 	#cd functions/fetch-stats && pylint main.py
 	#cd functions/fetch-open && pylint main.py
 	#cd functions/fetch-closed && pylint main.py
+
+.PHONY: deploy
+deploy:
+	cd functions/fetch-stats && sls deploy
+	cd functions/fetch-open && sls deploy
+	cd functions/fetch-closed && sls deploy
