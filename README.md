@@ -1,5 +1,7 @@
 # ManageEngine Servicedesk Plus Statistics Tool
 
+[![Build Status](https://travis-ci.org/nichmidd/servicedeskstatistics.svg?branch=master)](https://travis-ci.org/nichmidd/servicedeskstatistics)
+
 ## Overview
 
 This project utilises the SDP APIv3 to fetch details on all open and closed tickets
