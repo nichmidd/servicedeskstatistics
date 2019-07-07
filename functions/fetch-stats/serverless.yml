@@ -5,7 +5,7 @@ provider:
   runtime: python37
   region: us-central1
   project: ceservicedeskstats
-  credentials: ~/.gcloud/ceservicedeskstats.json
+  credentials: ~/.gcloud/gcloud.json
 
 plugins:
   - serverless-google-cloudfunctions

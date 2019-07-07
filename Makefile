@@ -15,6 +15,10 @@ build:
 .PHONY: test
 test:
 	ls functions/fetch-stats/config.json
+	ls functions/fetch-open/config.json
+	ls functions/fetch-closed/config.json
+	ls functions/import-stats/config.json
+	ls ~/.gcloud/
 	#cd functions/fetch-stats && pylint main.py
 	#cd functions/fetch-open && pylint main.py
 	#cd functions/fetch-closed && pylint main.py

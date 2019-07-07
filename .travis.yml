@@ -4,6 +4,11 @@ python:
   - '3.7'
 before_install:
   - echo $gpg_encryption_key | gpg --passphrase-fd 0 functions/fetch-stats/config.json.gpg
+  - echo $gpg_encryption_key | gpg --passphrase-fd 0 functions/fetch-open/config.json.gpg
+  - echo $gpg_encryption_key | gpg --passphrase-fd 0 functions/fetch-closed/config.json.gpg
+  - echo $gpg_encryption_key | gpg --passphrase-fd 0 functions/import-stats/config.json.gpg
+  - mkdir ~/.gcloud && mv gcloud.json.gpg ~/.gcloud/
+  - echo $gpg_encryption_key | gpg --passphrase-fd 0 ~/.gcloud/gcloud.json.gpg
 install:
   - nvm install node
 before_script:
