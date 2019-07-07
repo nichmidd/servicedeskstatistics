@@ -19,21 +19,21 @@ The 4 functions are deployed using the serverless framework to GCF
 
 The simplest way to deploy this project is to clone and use the Makefile
 
-'''bash
-git clone <https://github.com/nichmidd/servicedeskstatistics.git>
+```bash
+git clone https://github.com/nichmidd/servicedeskstatistics.git
 cd servicedeskstatistics
 cp functions/fetch-stats/config.json.example functions/fetch-stats/config.json
 cp functions/fetch-open/config.json.example functions/fetch-open/config.json
 cp functions/fetch-closed/config.json.example functions/fetch-closed/config.json
 cp functions/import-stats/config.json.example functions/import-stats/config.json
-'''
+```
 
 Now edit the config.json to suit your environment
 Next, edit each serverless.yml to suit your environment
 Now run the Makefile
 
-'''bash
+```bash
 make
-'''
+```
 
 ## WORK IN PROGRESS
