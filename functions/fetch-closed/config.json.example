@@ -1,0 +1,13 @@
+{
+    "technicianKey": "A1B2C3D4-E5F6-G7H8-I9A1-B2C3D4E5F6G7",
+    "url": "https://servicdesk.urldomain.name"
+    "sites":
+    {
+        "Sydney": {},
+        "Melbourne: {},
+        "Brisbane: {},
+        "Adelaide": {},
+        "Perth: {}
+    },
+    "statusCodes": ["1","2","3"]
+}

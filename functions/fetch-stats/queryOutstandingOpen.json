@@ -1,0 +1,23 @@
+{
+    "list_info":{
+        "start_index": 1,
+        "row_count": 100,
+        "get_total_count": true,
+        "search_criteria":[
+            {
+                "field": "created_time",
+                "condition": "lesser than",
+                "value": "0"
+            },
+            {
+                "logical_operator": "AND",
+                "field": "status",
+                "condition": "is",
+                "value":{
+                    "id": "0"
+                }
+            }
+        ]
+    },
+    "fields_required": ["id","priority","site","created_time"]
+}

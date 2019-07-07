@@ -1,0 +1,21 @@
+{
+    "list_info":{
+        "start_index": 1,
+        "row_count": 100,
+        "get_total_count": true,
+        "search_criteria":[
+            {
+                "field": "resolved_time",
+                "condition": "greater than",
+                "value": "XXXX"
+            },
+            {
+                "logical_operator": "AND",
+                "field": "resolved_time",
+                "condition": "lesser than",
+                "value": "XXXX"
+            }
+        ]
+    },
+    "fields_required": ["id","priority","site","created_time","resolved_time"]
+}

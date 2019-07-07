@@ -1,0 +1,14 @@
+{
+  "name": "fetch-closed",
+  "version": "0.0.1",
+  "description": "Import closed ticket details to google storage",
+  "main": "main.py",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "NichMidd",
+  "license": "GPL",
+  "devDependencies": {
+    "serverless-google-cloudfunctions": "*"
+  }
+}
