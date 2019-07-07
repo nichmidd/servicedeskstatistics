@@ -1,132 +1,137 @@
+'''Need to fix - just here to make PyLint happy'''
 import sys
-import datetime
-import pytz
 import base64
-import requests
 import json
 import io
-from retrying import retry
+import datetime
+import requests
 from requests.utils import requote_uri
+import pytz
+from retrying import retry
 from google.cloud import storage
 
 # Global variables
-LocalRun = False
-LocalStore = False
+LOCALRUN = False
+LOCALSTORE = False
 
-def fetchOpened(event, context):
+def fetchopened(event, context):
+    '''Need to fix - just here to make PyLint happy'''
     message = base64.b64decode(event['data']).decode('utf-8')
-    if (message == "DAILY"):
-        config = loadConfig()
-        timeSpan = calcTime()
-        getOpenedTickets(timeSpan, config)
-        storeResults(timeSpan, config)
+    if message == "DAILY":
+        config = loadconfig()
+        timespan = calctime()
+        getopenedtickets(timespan, config)
+        storeresults(timespan, config)
     else:
         print("Not Supported")
+        print(context)
     return 200
 
 @retry(wait_random_min=1000, wait_random_max=5000, stop_max_attempt_number=3)
-def fetchData(urlToFetch):
-    response = requests.get(urlToFetch)
+def fetchdata(urltofetch):
+    '''Need to fix - just here to make PyLint happy'''
+    response = requests.get(urltofetch)
     return response
 
-def loadConfig():
-    with open('config.json', 'r') as c:
-        cC = json.load(c)
-    return cC
+def loadconfig():
+    '''Need to fix - just here to make PyLint happy'''
+    with open('config.json', 'r') as configfile:
+        configjson = json.load(configfile)
+    return configjson
 
-def calcTime():
+def calctime():
+    '''Need to fix - just here to make PyLint happy'''
     local_tz = pytz.timezone('UTC')
     target_tz = pytz.timezone('Australia/Sydney')
-    timeUtc = datetime.datetime.utcnow()
-    timeNow = local_tz.localize(timeUtc)
-    timeAus  = (target_tz.normalize(timeNow)).strftime("%Y-%m-%d")
-    baseEndDate = (datetime.datetime.strptime(timeAus, "%Y-%m-%d") - datetime.timedelta(days=1))
-    tSpan = str(int((datetime.datetime.combine(baseEndDate, datetime.time(23,59,59))).strftime('%s'))*1000)
-    return tSpan
+    timeutc = datetime.datetime.utcnow()
+    timenow = local_tz.localize(timeutc)
+    timeaus = (target_tz.normalize(timenow)).strftime("%Y-%m-%d")
+    baseenddate = (datetime.datetime.strptime(timeaus, "%Y-%m-%d") - datetime.timedelta(days=1))
+    tspan = str(int((datetime.datetime.combine(baseenddate, datetime.time(23, 59, 59))).strftime('%s'))*1000)
+    return tspan
 
-def getOpenedTickets(timeSpan, config):
-    with open('queryOpened.json', 'r') as f:
-        queryJson = json.load(f)
+def getopenedtickets(timespan, config):
+    '''Need to fix - just here to make PyLint happy'''
+    with open('queryOpened.json', 'r') as fileopened:
+        queryjson = json.load(fileopened)
     # here we search for all tickets opened before the end of the search day
-    queryJson["list_info"]["search_criteria"][0]["value"] = timeSpan
-    baseUrl = config["url"] + '/api/v3/requests?TECHNICIAN_KEY=' + config["technicianKey"]
-    ticketCount = 0
-    for statusCode in config["statusCodes"]:
-        queryJson["list_info"]["search_criteria"][1]["value"]["id"] = statusCode
+    queryjson["list_info"]["search_criteria"][0]["value"] = timespan
+    baseurl = config["url"] + '/api/v3/requests?TECHNICIAN_KEY=' + config["technicianKey"]
+    ticketcount = 0
+    for statuscode in config["statusCodes"]:
+        queryjson["list_info"]["search_criteria"][1]["value"]["id"] = statuscode
         more = True
-        resultsIndex = 1
-        while (more):
-            queryJson["list_info"]["start_index"] = resultsIndex
-            encodedUri = requote_uri(json.dumps(queryJson))
-            queryUrl = baseUrl + '&input_data=' + encodedUri
-            response = fetchData(queryUrl)
-            jsonResults = response.json()
-            for request in jsonResults["requests"]:
-                reqId = request["id"] 
-                if (request["priority"]):
-                    if (request["priority"]["name"] in config["priorityTranslations"]):
-                        reqPri = config["priorityTranslations"][request["priority"]["name"]]["Priority"]
+        resultsindex = 1
+        while more:
+            queryjson["list_info"]["start_index"] = resultsindex
+            encodeduri = requote_uri(json.dumps(queryjson))
+            queryurl = baseurl + '&input_data=' + encodeduri
+            response = fetchdata(queryurl)
+            jsonresults = response.json()
+            for request in jsonresults["requests"]:
+                reqid = request["id"]
+                if request["priority"]:
+                    if request["priority"]["name"] in config["priorityTranslations"]:
+                        reqpri = config["priorityTranslations"][request["priority"]["name"]]["Priority"]
                     else:
-                        reqPri = request["priority"]["name"]
+                        reqpri = request["priority"]["name"]
                 else:
-                    reqPri = ""
-                if (request["site"]):
-                    if (request["site"]["name"] in config["siteTranslations"]):
-                        reqSite = config["siteTranslations"][request["site"]["name"]]["Name"]
+                    reqpri = ""
+                if request["site"]:
+                    if request["site"]["name"] in config["siteTranslations"]:
+                        reqsite = config["siteTranslations"][request["site"]["name"]]["Name"]
                     else:
-                        reqSite = request["site"]["name"]
+                        reqsite = request["site"]["name"]
                 else:
-                    reqSite = "NONE"
-                ticketCount = ticketCount + 1
-                reqCreated = datetime.datetime.fromtimestamp(int(int(request["created_time"]["value"])/1000)).strftime("%Y-%m-%d %H:%M:%S")
-                resultString = reqId+","+reqPri+","+reqSite+","+reqCreated+"\n"
-                config["results"].append(resultString)
-            more = jsonResults["list_info"]["has_more_rows"]
-            if (more):
-                resultsIndex = resultsIndex + 100
-    return
+                    reqsite = "NONE"
+                ticketcount = ticketcount + 1
+                reqcreated = datetime.datetime.fromtimestamp(int(int(request["created_time"]["value"])/1000)).strftime("%Y-%m-%d %H:%M:%S")
+                resultstring = reqid+","+reqpri+","+reqsite+","+reqcreated+"\n"
+                config["results"].append(resultstring)
+            more = jsonresults["list_info"]["has_more_rows"]
+            if more:
+                resultsindex = resultsindex + 100
 
-def storeResults(dayDate, config):
-    dayString = datetime.datetime.fromtimestamp(int(int(dayDate) / 1000)).strftime('%Y-%m-%d')
-    headerLine = "jobid,priority,site,opened"+"\n"
-    if (LocalRun):
-        print(dayString)
-    fileName = config["storageFolder"] + dayString + ".csv"
-    if (LocalStore):
-        fileName = "./"+fileName
-        fH = open(fileName, 'w')
+def storeresults(daydate, config):
+    '''Need to fix - just here to make PyLint happy'''
+    daystring = datetime.datetime.fromtimestamp(int(int(daydate) / 1000)).strftime('%Y-%m-%d')
+    headerline = "jobid,priority,site,opened"+"\n"
+    if LOCALRUN:
+        print(daystring)
+    filename = config["storageFolder"] + daystring + ".csv"
+    if LOCALSTORE:
+        filename = "./"+filename
+        filehandle = open(filename, 'w')
     else:
-        if (LocalRun):
+        if LOCALRUN:
             storage_client = storage.Client.from_service_account_json(config["googleJSONAuthKey"])
         else:
             storage_client = storage.Client()
         bucket = storage_client.get_bucket(config["googleStorageBucket"])
-        blob = bucket.blob(fileName)
-        fH = io.StringIO()
-    fH.write(headerLine)
-    for k in config["results"]:
-        fH.write(k)
-    if (LocalStore):
-        fH.close()
+        blob = bucket.blob(filename)
+        filehandle = io.StringIO()
+    filehandle.write(headerline)
+    for resultskey in config["results"]:
+        filehandle.write(resultskey)
+    if LOCALSTORE:
+        filehandle.close()
     else:
-        blob.upload_from_file(fH,rewind=True,content_type='text/csv')
-        fH.close()    
-    return
+        blob.upload_from_file(filehandle, rewind=True, content_type='text/csv')
+        filehandle.close()
 
-def calcTimeManualInput(manualTime):
-    target_tz = pytz.timezone('Australia/Sydney')
-    finTime = datetime.datetime.strptime(str(manualTime), "%Y-%m-%d")
-    tSpan = str(int((datetime.datetime.combine(finTime, datetime.time(23,59,59))).strftime('%s'))*1000)
-    config = loadConfig()
-    getOpenedTickets(tSpan, config)
-    storeResults(tSpan, config)
-    return
+def calctimemanualinput(manualtime):
+    '''Need to fix - just here to make PyLint happy'''
+    fintime = datetime.datetime.strptime(str(manualtime), "%Y-%m-%d")
+    tspan = str(int((datetime.datetime.combine(fintime, datetime.time(23, 59, 59))).strftime('%s'))*1000)
+    config = loadconfig()
+    getopenedtickets(tspan, config)
+    storeresults(tspan, config)
 
 if __name__ == "__main__":
-    datesToProcess = list()
-    datesToProcess.append(sys.argv[1])
-    if (len(sys.argv) > 2):
-        if (sys.argv[2] == "local"):
-            LocalStore = True
-    LocalRun = True
-    calcTimeManualInput(datesToProcess[0])
+    DATESTOPROCESS = list()
+    DATESTOPROCESS.append(sys.argv[1])
+    if len(sys.argv) > 2:
+        if sys.argv[2] == "local":
+            LOCALSTORE = True
+    LOCALRUN = True
+    calctimemanualinput(DATESTOPROCESS[0])
