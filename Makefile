@@ -1,5 +1,5 @@
 .PHONY: all
-all: prebuild build test deploy
+all: prebuild build test
 
 .PHONY: prebuild
 prebuild:

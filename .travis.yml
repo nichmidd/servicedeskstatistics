@@ -15,6 +15,12 @@ before_script:
   - nvm use node
 script:
   - make
+deploy:
+  skip_cleanup: true
+  provider: script
+  script: make deploy
+  on:
+    tags: true
 env:
   global:
     secure: psTQQMT1XYB7Sm+cyGSdXKKO2/qnFjfBd3gdiHpoKTdelaIhSHDGUEhU8ZbuSSokiBlpQFNYxmUqq2PgZ6uXyWvtVfzQEtFYPvU7gJGXWk9WMTmrovCyXaRkaNxmQM6E2HvIPNhSAVnF6abeXdgLD8Fa14xqtvYCZ2I9vQt07vW4FEdW9DPsN5ljVQcxt9iVVRQ92r0131p8L9QJsfzQOEUeKP5vu738TPL+yOHcvZedVQiKajVvq4B11u/y+KnNHVmux+8+6u/VUDGWmWigEXzTL9U6YAZNNKPE7P5E77oX4DlExxZYWj9oS10OH4WVCsC6ju3j+bKW5Bf5FpXPTmXFyGT5S8cCJNri6Q496LOTy/ehnVGsHL22M6bvih46S9GrOWtn+rPAWbNGEH/bQ50IPotbeM1dM0uFQnl3E3Cu4KnG1yiwybQzwXyZLlZTFlA5I1sYwScMUvMktO3fgOzE7UzgNX8o0BZ53wgcjTntLy/CZnxkix7pZv/Dtrb7fasSwB3fpLdbkmf4omST+OTXbOQXF5/ssDtIVXg1jtFJ675OppqVTDS3NXA7Bh0jhdFU9KLwuniO6Xagta6gVXDvJWRwBj/n2G+tH2+bBsTJZltdaKNHnrr08CHC6WY6TmRZEQxvIopwtT1OJPWqDNJ2v5fLTzJmo8SWawYCid0=
