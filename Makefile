@@ -1,11 +1,23 @@
 .PHONY: all
-all: test
+all: prebuild build test 
 
-.PHONY: test
-test:
+.PHONY: prebuild
+prebuild:
 	python3 -V
 	pip3 -V
 	node --version
 	npm --version
 	npm install -g serverless
 	sls --version
+	pip3 install pylint
+
+.PHONY: build
+build:
+	cd ~/functions/fetch-stats
+	sls install
+	pip3 install -r requirements.txt
+
+.PHONY: test
+test:
+	cd ~/functions/fetch-stats
+	pylint .
