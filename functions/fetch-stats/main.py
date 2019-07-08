@@ -28,8 +28,8 @@ def fetchstats(event, context):
         timespan = calctime()
         getopentickets(timespan, config)
         getclosedtickets(timespan, config)
-        getoutstrtandingclosed(timespan, config)
-        getoutstrtandingopen(timespan, config)
+        getoutstandingclosed(timespan, config)
+        getoutstandingopen(timespan, config)
         storeresults(timespan[0], config)
     else:
         print("Not Supported")
@@ -49,7 +49,7 @@ def loadconfig():
         for resultskey in configjson["results"]:
             configjson["results"][resultskey]["TotalOpened"] = "0"
             configjson["results"][resultskey]["TotalClosed"] = "0"
-            configjson["results"][resultskey]["Totaloutstrtanding"] = "0"
+            configjson["results"][resultskey]["Totaloutstanding"] = "0"
             configjson["results"][resultskey]["Out6W"] = "0"
             configjson["results"][resultskey]["Out4W"] = "0"
             configjson["results"][resultskey]["Out2W"] = "0"
@@ -96,8 +96,8 @@ def calctimemanualinput(manualtimes):
         tspan = [stime, etime]
         getopentickets(tspan, config)
         getclosedtickets(tspan, config)
-        getoutstrtandingclosed(tspan, config)
-        getoutstrtandingopen(tspan, config)
+        getoutstandingclosed(tspan, config)
+        getoutstandingopen(tspan, config)
         storeresults(tspan[0], config)
         starttime = starttime + datetime.timedelta(days=1)
 
@@ -192,9 +192,9 @@ def getclosedtickets(timespan, config):
         if more:
             resultsindex = resultsindex + 100
 
-def getoutstrtandingclosed(timespan, config):
+def getoutstandingclosed(timespan, config):
     '''Need to fix - just here to make PyLint happy'''
-    with open('queryoutstrtandingClosed.json', 'r') as filequery:
+    with open('queryoutstandingClosed.json', 'r') as filequery:
         queryjson = json.load(filequery)
     queryjson["list_info"]["search_criteria"][0]["value"] = timespan[0]
     queryjson["list_info"]["search_criteria"][1]["value"] = timespan[1]
@@ -225,11 +225,11 @@ def getoutstrtandingclosed(timespan, config):
             else:
                 reqsite = "NONE"
             if reqsite in config["results"]:
-                config["results"][reqsite]["Totaloutstrtanding"] = str(int(config["results"][reqsite]["Totaloutstrtanding"]) + 1)
+                config["results"][reqsite]["Totaloutstanding"] = str(int(config["results"][reqsite]["Totaloutstanding"]) + 1)
             else:
                 config["UnknownSites"].append(reqsite)
                 reqsite = "UNKNOWN"
-                config["results"][reqsite]["Totaloutstrtanding"] = str(int(config["results"][reqsite]["Totaloutstrtanding"]) + 1)
+                config["results"][reqsite]["Totaloutstanding"] = str(int(config["results"][reqsite]["Totaloutstanding"]) + 1)
             ticketage = int(timespan[0]) - int(request["created_time"]["value"])
             if ticketage > SIXWEEKS:
                 config["results"][reqsite]["Out6W"] = str(int(config["results"][reqsite]["Out6W"]) + 1)
@@ -248,9 +248,9 @@ def getoutstrtandingclosed(timespan, config):
         if more:
             resultsindex = resultsindex + 100
 
-def getoutstrtandingopen(timespan, config):
+def getoutstandingopen(timespan, config):
     '''Need to fix - just here to make PyLint happy'''
-    with open('queryoutstrtandingOpen.json', 'r') as fileopenout:
+    with open('queryoutstandingOpen.json', 'r') as fileopenout:
         queryjson = json.load(fileopenout)
     queryjson["list_info"]["search_criteria"][0]["value"] = timespan[0]
     baseurl = config["url"] + '/api/v3/requests?TECHNICIAN_KEY=' + config["technicianKey"]
@@ -282,11 +282,11 @@ def getoutstrtandingopen(timespan, config):
                 else:
                     reqsite = "NONE"
                 if reqsite in config["results"]:
-                    config["results"][reqsite]["Totaloutstrtanding"] = str(int(config["results"][reqsite]["Totaloutstrtanding"]) + 1)
+                    config["results"][reqsite]["Totaloutstanding"] = str(int(config["results"][reqsite]["Totaloutstanding"]) + 1)
                 else:
                     config["UnknownSites"].append(reqsite)
                     reqsite = "UNKNOWN"
-                    config["results"][reqsite]["Totaloutstrtanding"] = str(int(config["results"][reqsite]["Totaloutstrtanding"]) + 1)
+                    config["results"][reqsite]["Totaloutstanding"] = str(int(config["results"][reqsite]["Totaloutstanding"]) + 1)
                 ticketage = int(timespan[0]) - int(request["created_time"]["value"])
                 if ticketage > SIXWEEKS:
                     config["results"][reqsite]["Out6W"] = str(int(config["results"][reqsite]["Out6W"]) + 1)
@@ -308,7 +308,7 @@ def getoutstrtandingopen(timespan, config):
 def storeresults(daydate, config):
     '''Need to fix - just here to make PyLint happy'''
     daystring = datetime.datetime.fromtimestamp(int(int(daydate) / 1000)).strftime('%Y-%m-%d')
-    headerline = "date,site,opened,closed,outstrtanding,cosd,6w,4w,2w,7d,4d,l4d"+"\n"
+    headerline = "date,site,opened,closed,outstanding,cosd,6w,4w,2w,7d,4d,l4d"+"\n"
     filename = config["storageFolder"] + daystring + ".csv"
     if LOCALRUN:
         print(daystring)
@@ -327,11 +327,11 @@ def storeresults(daydate, config):
         filehandle = io.StringIO()
     filehandle.write(headerline)
     for resultskey in sorted(config["results"]):
-        outstrtr = daystring
-        outstrtr = outstrtr+","+str(resultskey)
-        outstrtr = outstrtr+","+config["results"][resultskey]["TotalOpened"]
+        outstr = daystring
+        outstr = outstr+","+str(resultskey)
+        outstr = outstr+","+config["results"][resultskey]["TotalOpened"]
         outstr = outstr+","+config["results"][resultskey]["TotalClosed"]
-        outstr = outstr+","+config["results"][resultskey]["Totaloutstrtanding"]
+        outstr = outstr+","+config["results"][resultskey]["Totaloutstanding"]
         outstr = outstr+","+config["results"][resultskey]["ClosedSameDay"]
         outstr = outstr+","+config["results"][resultskey]["Out6W"]
         outstr = outstr+","+config["results"][resultskey]["Out4W"]
