@@ -16,6 +16,7 @@ package:
     - .gitignore
     - .git/**
     - config.json.example
+    - config.json.gpg
     - outputdir/**
 
 functions:

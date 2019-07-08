@@ -16,6 +16,7 @@ package:
     - .gitignore
     - .git/**
     - config.json.example
+    - config.json.gpg
     - stats-closed/**
 
 functions:
@@ -25,3 +26,8 @@ functions:
       - event:
           eventType: providers/cloud.pubsub/eventTypes/topic.publish
           resource: 'projects/${self:provider.project, ""}/topics/FetchClosed'
+
+resources:
+  resources:
+    - type: storage.v1.bucket
+      name: ceservicedeskstats
