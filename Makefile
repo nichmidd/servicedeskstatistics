@@ -26,3 +26,9 @@ deploy:
 	cd functions/fetch-stats && sls deploy
 	cd functions/fetch-open && sls deploy
 	cd functions/fetch-closed && sls deploy
+
+.PHONY: destroy
+destroy:
+	cd functions/fetch-stats && sls remove
+	cd functions/fetch-open && sls remove
+	cd functions/fetch-closed && sls remove
