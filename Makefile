@@ -11,8 +11,7 @@ build:
 	cd functions/fetch-stats && sls plugin install -n serverless-google-cloudfunctions && pip3 install -r requirements.txt
 	cd functions/fetch-open && sls plugin install -n serverless-google-cloudfunctions && pip3 install -r requirements.txt
 	cd functions/fetch-closed && sls plugin install -n serverless-google-cloudfunctions && pip3 install -r requirements.txt
-	# only run pip3 for import-stats ##TODO## convert to serverless function
-	cd functions/import-stats && pip3 install -r requirements.txt
+	cd functions/import-stats && sls plugin install -n serverless-google-cloudfunctions && pip3 install -r requirements.txt
 
 .PHONY: test
 test:
@@ -26,9 +25,11 @@ deploy:
 	cd functions/fetch-stats && sls deploy
 	cd functions/fetch-open && sls deploy
 	cd functions/fetch-closed && sls deploy
+	cd functions/import-stats && sls deploy
 
 .PHONY: destroy
 destroy:
 	cd functions/fetch-stats && sls remove
 	cd functions/fetch-open && sls remove
 	cd functions/fetch-closed && sls remove
+	cd functions/import-stats && sls remove
