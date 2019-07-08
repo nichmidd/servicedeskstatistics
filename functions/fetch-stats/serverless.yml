@@ -1,4 +1,4 @@
-service: fetch-stats
+service: sdp-fetch-stats
 
 provider:
   name: google
@@ -20,8 +20,13 @@ package:
 
 functions:
   fetch-stats:
-    handler: fetchStats
+    handler: fetchstats
     events:
       - event:
           eventType: providers/cloud.pubsub/eventTypes/topic.publish
           resource: 'projects/${self:provider.project, ""}/topics/FetchStats'
+
+resources:
+  resources:
+    - type: storage.v1.bucket
+      name: ceservicedeskstats
