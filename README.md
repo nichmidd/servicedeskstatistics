@@ -2,6 +2,10 @@
 
 [![Build Status](https://travis-ci.org/nichmidd/servicedeskstatistics.svg?branch=master)](https://travis-ci.org/nichmidd/servicedeskstatistics)
 
+## Version
+
+v0.2.1
+
 ## Overview
 
 This project utilises the SDP APIv3 to fetch details on all open and closed tickets
