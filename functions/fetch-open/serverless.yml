@@ -1,4 +1,4 @@
-service: fetch-opened
+service: sdp-fetch-opened
 
 provider:
   name: google
@@ -20,8 +20,8 @@ package:
     - stats-opened/**
 
 functions:
-  fetch-stats:
-    handler: fetchOpened
+  fetch-opened:
+    handler: fetchopened
     events:
       - event:
           eventType: providers/cloud.pubsub/eventTypes/topic.publish

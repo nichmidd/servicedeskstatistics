@@ -1,4 +1,4 @@
-service: fetch-closed
+service: sdp-fetch-closed1
 
 provider:
   name: google
@@ -20,8 +20,8 @@ package:
     - stats-closed/**
 
 functions:
-  fetch-stats:
-    handler: fetchClosed
+  fetch-closed:
+    handler: fetchclosed
     events:
       - event:
           eventType: providers/cloud.pubsub/eventTypes/topic.publish
