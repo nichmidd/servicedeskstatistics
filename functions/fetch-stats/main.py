@@ -194,7 +194,7 @@ def getclosedtickets(timespan, config):
 
 def getoutstandingclosed(timespan, config):
     '''Need to fix - just here to make PyLint happy'''
-    with open('queryoutstandingClosed.json', 'r') as filequery:
+    with open('queryOutstandingClosed.json', 'r') as filequery:
         queryjson = json.load(filequery)
     queryjson["list_info"]["search_criteria"][0]["value"] = timespan[0]
     queryjson["list_info"]["search_criteria"][1]["value"] = timespan[1]
@@ -250,7 +250,7 @@ def getoutstandingclosed(timespan, config):
 
 def getoutstandingopen(timespan, config):
     '''Need to fix - just here to make PyLint happy'''
-    with open('queryoutstandingOpen.json', 'r') as fileopenout:
+    with open('queryOutstandingOpen.json', 'r') as fileopenout:
         queryjson = json.load(fileopenout)
     queryjson["list_info"]["search_criteria"][0]["value"] = timespan[0]
     baseurl = config["url"] + '/api/v3/requests?TECHNICIAN_KEY=' + config["technicianKey"]
